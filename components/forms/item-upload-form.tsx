@@ -19,6 +19,16 @@ import { useToast } from "../ui/use-toast";
 import { useUploadThing } from "@/utils/uploadthing";
 import { useState } from "react";
 import UploadButton from "../upload/upload-button";
+import { Textarea } from "../ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import SelectInput from "../dotwalk";
+import DotWalk from "../dotwalk";
 
 type Props = {};
 
@@ -60,6 +70,47 @@ const ItemUploadForm = (props: Props) => {
     },
   });
 
+  const outerwear = [
+    {
+      type: "Capes & ponchos",
+      selected: true,
+      items: [],
+    },
+    {
+      type: "Coats",
+      selected: false,
+      items: [],
+    },
+    {
+      type: "Gilets & body warmers",
+      selected: false,
+      items: [],
+    },
+    {
+      type: "Jackets",
+      selected: false,
+      items: [
+        // Example items for Jackets
+        { name: "Leather Jacket", size: "M", color: "Black" },
+        { name: "Denim Jacket", size: "L", color: "Blue" },
+        { name: "Bomber Jacket", size: "S", color: "Green" },
+      ],
+    },
+  ];
+
+  const category = {
+    women: {
+      clothing: {
+        outerWear: outerwear,
+      },
+    },
+    men: {
+      clothing: {
+        outerWear: outerwear,
+      },
+    },
+  };
+
   return (
     <Form {...form}>
       <form
@@ -69,7 +120,7 @@ const ItemUploadForm = (props: Props) => {
         <div className="col-span-2 xl:col-span-3 shadow-md shadow-slate-700  p-4 rounded">
           <Uploader files={files} setFiles={setFiles} />
         </div>
-        <div className="shadow-md shadow-slate-700  p-4 rounded">
+        <div className="shadow-md col-span-2 xl:col-span-3 shadow-slate-700  p-4 rounded">
           <FormField
             control={form.control}
             name="title"
@@ -77,15 +128,13 @@ const ItemUploadForm = (props: Props) => {
               <FormItem>
                 <FormLabel>Title</FormLabel>
                 <FormControl>
-                  <Input placeholder="shadcn" {...field} />
+                  <Input placeholder="Title" {...field} />
                 </FormControl>
 
                 <FormMessage />
               </FormItem>
             )}
           />
-        </div>
-        <div className="shadow-md shadow-slate-700  p-4 rounded">
           <FormField
             control={form.control}
             name="description"
@@ -93,7 +142,7 @@ const ItemUploadForm = (props: Props) => {
               <FormItem>
                 <FormLabel>Description</FormLabel>
                 <FormControl>
-                  <Input placeholder="shadcn" {...field} />
+                  <Textarea placeholder="Description" {...field} />
                 </FormControl>
 
                 <FormMessage />
@@ -101,6 +150,7 @@ const ItemUploadForm = (props: Props) => {
             )}
           />
         </div>
+
         <div className="shadow-md shadow-slate-700  p-4 rounded">
           <FormField
             control={form.control}
@@ -108,9 +158,22 @@ const ItemUploadForm = (props: Props) => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Category</FormLabel>
-                <FormControl>
-                  <Input placeholder="shadcn" {...field} />
-                </FormControl>
+                <DotWalk />
+                {/* <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a verified email to display" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="m@example.com">m@example.com</SelectItem>
+                    <SelectItem value="m@google.com">m@google.com</SelectItem>
+                    <SelectItem value="m@support.com">m@support.com</SelectItem>
+                  </SelectContent>
+                </Select> */}
 
                 <FormMessage />
               </FormItem>
