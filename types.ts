@@ -13,3 +13,11 @@ export type FileWithRotation = {
   file: File;
   rotated: number;
 };
+
+export interface Category {
+  name: string;
+  subcategories?: Category[];
+  items?: string[];
+}
+export type SelectedPathObject = { [key: string]: any };
+export type SelectedObject = { [key: string]: any };

@@ -1,5 +1,4 @@
 import ItemUploadForm from "@/components/forms/item-upload-form";
-import { Uploader } from "@/components/upload/uploader";
 
 type Props = {};
 

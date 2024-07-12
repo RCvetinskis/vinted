@@ -90,6 +90,7 @@ const DotWalk: React.FC = () => {
   };
 
   console.log(selectedPath);
+  console.log(selectedItem);
   const currentCategory = getCurrentCategory();
 
   return (

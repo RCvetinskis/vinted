@@ -21,6 +21,7 @@ const buttonVariants = cva(
         upload:
           "bg-vintedGreen text-white hover:scale-[97%] transform transition-transform  ease-in-out",
       },
+
       size: {
         default: "h-10 px-4 py-2",
         sm: "h-9 rounded-md px-3",

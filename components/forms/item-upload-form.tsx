@@ -29,6 +29,9 @@ import {
 } from "@/components/ui/select";
 import SelectInput from "../dotwalk";
 import DotWalk from "../dotwalk";
+import SelectCategory from "../category/select-category";
+import { useSelectCategoryStore } from "@/store/store";
+import UploadFormColumn from "./upload-form-column";
 
 type Props = {};
 
@@ -70,198 +73,181 @@ const ItemUploadForm = (props: Props) => {
     },
   });
 
-  const outerwear = [
-    {
-      type: "Capes & ponchos",
-      selected: true,
-      items: [],
-    },
-    {
-      type: "Coats",
-      selected: false,
-      items: [],
-    },
-    {
-      type: "Gilets & body warmers",
-      selected: false,
-      items: [],
-    },
-    {
-      type: "Jackets",
-      selected: false,
-      items: [
-        // Example items for Jackets
-        { name: "Leather Jacket", size: "M", color: "Black" },
-        { name: "Denim Jacket", size: "L", color: "Blue" },
-        { name: "Bomber Jacket", size: "S", color: "Green" },
-      ],
-    },
-  ];
-
-  const category = {
-    women: {
-      clothing: {
-        outerWear: outerwear,
-      },
-    },
-    men: {
-      clothing: {
-        outerWear: outerwear,
-      },
-    },
-  };
+  const selectedObject = useSelectCategoryStore(
+    (state) => state.selectedObject
+  );
+  // TODO: based on selectedObject display content
 
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="grid grid-cols-2 xl:grid-cols-3 gap-8"
+        className="flex flex-col gap-6 text-sm w-full "
       >
-        <div className="col-span-2 xl:col-span-3 shadow-md shadow-slate-700  p-4 rounded">
+        <UploadFormColumn classname="col-span-2">
           <Uploader files={files} setFiles={setFiles} />
+        </UploadFormColumn>
+        <div>
+          <UploadFormColumn>
+            <FormField
+              control={form.control}
+              name="title"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Title</FormLabel>
+                  <FormControl>
+                    <Input
+                      className="border-0 border-b rounded-none focus-visible:rounded "
+                      placeholder="Title"
+                      {...field}
+                    />
+                  </FormControl>
+
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </UploadFormColumn>
+          <UploadFormColumn>
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Description</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      className="border-0 border-b rounded-none focus-visible:rounded "
+                      placeholder="Description"
+                      {...field}
+                    />
+                  </FormControl>
+
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </UploadFormColumn>
         </div>
-        <div className="shadow-md col-span-2 xl:col-span-3 shadow-slate-700  p-4 rounded">
-          <FormField
-            control={form.control}
-            name="title"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Title</FormLabel>
-                <FormControl>
-                  <Input placeholder="Title" {...field} />
-                </FormControl>
 
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="description"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Description</FormLabel>
-                <FormControl>
-                  <Textarea placeholder="Description" {...field} />
-                </FormControl>
+        {/* category */}
 
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-
-        <div className="shadow-md shadow-slate-700  p-4 rounded">
+        <UploadFormColumn>
           <FormField
             control={form.control}
             name="category"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Category</FormLabel>
-                <DotWalk />
-                {/* <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select a verified email to display" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="m@example.com">m@example.com</SelectItem>
-                    <SelectItem value="m@google.com">m@google.com</SelectItem>
-                    <SelectItem value="m@support.com">m@support.com</SelectItem>
-                  </SelectContent>
-                </Select> */}
+              <FormItem className="grid grid-cols-1 md:grid-cols-2 items-center">
+                <FormLabel className="">Category</FormLabel>
+                <div className="">
+                  <SelectCategory />
+                </div>
 
                 <FormMessage />
               </FormItem>
             )}
           />
-        </div>
-        <div className="shadow-md shadow-slate-700  p-4 rounded">
-          <FormField
-            control={form.control}
-            name="brand"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Brand</FormLabel>
-                <FormControl>
-                  <Input placeholder="shadcn" {...field} />
-                </FormControl>
+          {selectedObject && (
+            <div className="flex flex-col gap-3 ">
+              <FormField
+                control={form.control}
+                name="brand"
+                render={({ field }) => (
+                  <FormItem className="grid grid-cols-1 md:grid-cols-2 items-center ">
+                    <FormLabel>Brand</FormLabel>
+                    <FormControl>
+                      <Input
+                        className="border-0 border-b rounded-none focus-visible:rounded "
+                        placeholder="shadcn"
+                        {...field}
+                      />
+                    </FormControl>
 
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-        <div className="shadow-md shadow-slate-700  p-4 rounded">
-          <FormField
-            control={form.control}
-            name="condition"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Condition</FormLabel>
-                <FormControl>
-                  <Input placeholder="shadcn" {...field} />
-                </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-        <div className="shadow-md shadow-slate-700  p-4 rounded">
-          <FormField
-            control={form.control}
-            name="size"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Size</FormLabel>
-                <FormControl>
-                  <Input placeholder="XL" {...field} />
-                </FormControl>
+              <FormField
+                control={form.control}
+                name="condition"
+                render={({ field }) => (
+                  <FormItem className="grid grid-cols-1 md:grid-cols-2 items-center">
+                    <FormLabel>Condition</FormLabel>
+                    <FormControl>
+                      <Input
+                        className="border-0 border-b rounded-none focus-visible:rounded "
+                        placeholder="shadcn"
+                        {...field}
+                      />
+                    </FormControl>
 
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-        <div className="shadow-md shadow-slate-700  p-4 rounded">
-          <FormField
-            control={form.control}
-            name="colors"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Colors</FormLabel>
-                <FormControl>
-                  <Input placeholder="Red" {...field} />
-                </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-        <div className="shadow-md shadow-slate-700  p-4 rounded">
-          <FormField
-            control={form.control}
-            name="materials"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Materials</FormLabel>
-                <FormControl>
-                  <Input placeholder="Leather" {...field} />
-                </FormControl>
+              <FormField
+                control={form.control}
+                name="size"
+                render={({ field }) => (
+                  <FormItem className="grid grid-cols-1 md:grid-cols-2 items-center">
+                    <FormLabel>Size</FormLabel>
+                    <FormControl>
+                      <Input
+                        className="border-0 border-b rounded-none focus-visible:rounded "
+                        placeholder="XL"
+                        {...field}
+                      />
+                    </FormControl>
 
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-        <div className="shadow-md shadow-slate-700  p-4 rounded">
+              <FormField
+                control={form.control}
+                name="colors"
+                render={({ field }) => (
+                  <FormItem className="grid grid-cols-1 md:grid-cols-2 items-center">
+                    <FormLabel>Colors</FormLabel>
+                    <FormControl>
+                      <Input
+                        className="border-0 border-b rounded-none focus-visible:rounded "
+                        placeholder="Red"
+                        {...field}
+                      />
+                    </FormControl>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="materials"
+                render={({ field }) => (
+                  <FormItem className="grid grid-cols-1 md:grid-cols-2 items-center">
+                    <FormLabel>Materials</FormLabel>
+                    <FormControl>
+                      <Input
+                        className="border-0 border-b rounded-none focus-visible:rounded "
+                        placeholder="Leather"
+                        {...field}
+                      />
+                    </FormControl>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          )}
+        </UploadFormColumn>
+
+        <UploadFormColumn>
           <FormField
             control={form.control}
             name="parcelSize"
@@ -276,8 +262,8 @@ const ItemUploadForm = (props: Props) => {
               </FormItem>
             )}
           />
-        </div>
-        <div className="shadow-md shadow-slate-700  p-4 rounded">
+        </UploadFormColumn>
+        <UploadFormColumn>
           <FormField
             control={form.control}
             name="price"
@@ -292,9 +278,9 @@ const ItemUploadForm = (props: Props) => {
               </FormItem>
             )}
           />
-        </div>
+        </UploadFormColumn>
 
-        <div className="col-span-2 xl:col-span-3 flex justify-end">
+        <div className="flex justify-end">
           <UploadButton type="submit" size="lg" />
         </div>
       </form>
